@@ -9,9 +9,9 @@ module.exports = function (app) {
 
   app.post("/api/customer/create", [verifyCreateCustomer.checkDuplicateUsernameOrEmail, authJwt.verifyToken, authJwt.isAdmin], controller.createCustomer);
 
-  app.put("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.updateCustomer);
+  app.put("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAdmin], controller.updateCustomer);
 
-  app.get("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.showCustomer);
+  app.get("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAdmin], controller.showCustomer);
 
-  app.delete("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.deleteCustomer);
+  app.delete("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.isAdmin], controller.deleteCustomer);
 };
