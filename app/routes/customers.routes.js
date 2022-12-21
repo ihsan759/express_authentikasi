@@ -11,5 +11,7 @@ module.exports = function (app) {
 
   app.put("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.updateCustomer);
 
+  app.get("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.showCustomer);
+
   app.delete("/api/customer/:id", [authJwt.verifyToken, authJwt.isAdmin, authJwt.verifyToken, authJwt.isAdmin], controller.deleteCustomer);
 };

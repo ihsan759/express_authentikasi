@@ -60,3 +60,18 @@ exports.deleteCustomer = async (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.showCustomer = async (req, res) => {
+  const id = await req.params.id;
+
+  Customer.findOne({
+    where: {
+      id: id,
+    },
+  }).then((customer) => {
+    res.send({
+      message: "Data Customer Available",
+      data: customer,
+    });
+  });
+};
