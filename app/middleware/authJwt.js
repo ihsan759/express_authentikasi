@@ -24,6 +24,32 @@ verifyToken = (req, res, next) => {
   });
 };
 
+verifyTokenCustomer = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res.status(403).send({
+      message: "No token provided!",
+    });
+  }
+
+  jwt.verify(token, config.secret, (err, decodedCustomer) => {
+    if (err) {
+      return res.status(401).send({
+        message: "Unauthorized!",
+      });
+    }
+    req.customerId = decodedCustomer.id;
+    next();
+  });
+};
+
+isCustomer = (req, res) => {
+  Customer.findByPk(req.customerId).then(() => {
+    return;
+  });
+};
+
 isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
     user.getRoles().then((roles) => {
@@ -83,7 +109,9 @@ isModeratorOrAdmin = (req, res, next) => {
 
 const authJwt = {
   verifyToken: verifyToken,
+  verifyTokenCustomer: verifyTokenCustomer,
   isAdmin: isAdmin,
+  isCustomer: isCustomer,
   isModerator: isModerator,
   isModeratorOrAdmin: isModeratorOrAdmin,
 };

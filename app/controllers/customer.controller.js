@@ -75,3 +75,12 @@ exports.showCustomer = async (req, res) => {
     });
   });
 };
+
+exports.showAllCustomer = (req, res) => {
+  Customer.findAll().then((customer) => {
+    res.send({
+      message: "Data Customer Available",
+      data: customer,
+    });
+  });
+};

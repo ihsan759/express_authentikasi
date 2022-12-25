@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Role = db.role;
 
+// Sync table (Menghapus dan membuat ulang table)
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and Resync Db");
   initial();
@@ -55,4 +56,6 @@ function initial() {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
-require("./app/routes/customers.routes")(app);
+require("./app/routes/customer.routes")(app);
+require("./app/routes/product.routes")(app);
+require("./app/routes/order.routes")(app);

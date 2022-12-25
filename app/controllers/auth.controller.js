@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Customer = db.customer;
 
 const Op = db.Sequelize.Op;
 
@@ -76,6 +77,42 @@ exports.signin = (req, res) => {
           roles: authorities,
           accessToken: token,
         });
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+exports.signinCustomer = (req, res) => {
+  Customer.findOne({
+    where: {
+      username: req.body.username,
+    },
+  })
+    .then((customer) => {
+      if (!customer) {
+        return res.status(404).send({ message: "Customer Not found." });
+      }
+
+      var passwordIsValid = bcrypt.compareSync(req.body.password, customer.password);
+
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Invalid Password!",
+        });
+      }
+
+      var token = jwt.sign({ id: customer.id }, config.secret, {
+        expiresIn: 86400, // 24 hours
+      });
+
+      res.status(200).send({
+        id: customer.id,
+        username: customer.username,
+        email: customer.email,
+        accessToken: token,
       });
     })
     .catch((err) => {
